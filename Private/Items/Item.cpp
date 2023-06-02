@@ -7,6 +7,9 @@
 AItem::AItem()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
+	RootComponent = ItemMesh;
 }
 
 void AItem::BeginPlay()
@@ -32,14 +35,7 @@ void AItem::Tick(float DeltaTime)
 
 	RunningTime += DeltaTime;
 
-	// float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);
-	// AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
+	AddActorWorldRotation(FRotator(0.f, 45.f * DeltaTime, 0.f));
 
-	DRAW_SPHERE_SingleFrame(GetActorLocation(), FColor::Green);
-	DRAW_VECTOR_SingleFrame(GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f);
-
-	// Using our template function to calculate the midpoint between actor location and the origin
-	FVector AvgVector = Avg<FVector>(GetActorLocation(), FVector::ZeroVector);
-	DRAW_POINT_SingleFrame(AvgVector);
 }
 

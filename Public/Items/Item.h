@@ -18,6 +18,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* ItemMesh;
+
+protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Amplitude = 0.25f;
@@ -26,17 +30,18 @@ protected:
 		float TimeConstant = 5.f;
 
 	UFUNCTION(BlueprintPure)
-	float TransformedSin();
+		float TransformedSin();
 
 	UFUNCTION(BlueprintPure)
-	float TransformedCos();
+		float TransformedCos();
 
 	template<typename T>
 	T Avg(T First, T Second);
 
 private:
+
 	UPROPERTY(VisibleAnywhere)
-	float RunningTime;
+		float RunningTime;
 
 	
 
