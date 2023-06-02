@@ -32,8 +32,6 @@ void AItem::Tick(float DeltaTime)
 
 	RunningTime += DeltaTime;
 
-	// Adding a line of code to test version control
-
 	// float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);
 	// AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
 
