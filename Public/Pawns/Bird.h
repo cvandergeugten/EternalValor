@@ -4,11 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "Bird.generated.h"
 
 // Forward declarations for components to prevent code bloat
 class UCapsuleComponent;
 class USkeletalMeshComponent;
+class USpringArmComponent;
+class UCameraComponent;
+
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class ETERNALVALOR_API ABird : public APawn
@@ -18,13 +24,19 @@ class ETERNALVALOR_API ABird : public APawn
 public:
 	ABird();
 
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputMappingContext* BirdMappingContext;
 
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* MoveAction;
+
+	void Move(const FInputActionValue& Value);
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -32,4 +44,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 		USkeletalMeshComponent* BirdMesh;
+
+	UPROPERTY(VisibleAnywhere)
+		USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere)
+		UCameraComponent* ViewCamera;
 };
