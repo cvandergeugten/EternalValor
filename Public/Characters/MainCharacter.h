@@ -3,13 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "InputActionValue.h"
-#include "Bird.generated.h"
+#include "MainCharacter.generated.h"
 
-// Forward declarations for components to prevent code bloat
-class UCapsuleComponent;
-class USkeletalMeshComponent;
 class USpringArmComponent;
 class UCameraComponent;
 
@@ -17,12 +14,12 @@ class UInputMappingContext;
 class UInputAction;
 
 UCLASS()
-class ETERNALVALOR_API ABird : public APawn
+class ETERNALVALOR_API AMainCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	ABird();
+	AMainCharacter();
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -30,25 +27,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputMappingContext* BirdMappingContext;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* MoveAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputMappingContext* MainCharacterContext;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* MovementAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* LookAction;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
 private:
-	UPROPERTY(VisibleAnywhere)
-	UCapsuleComponent* Capsule;
-
-	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* BirdMesh;
-
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
