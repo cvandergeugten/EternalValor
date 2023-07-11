@@ -9,6 +9,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+//class UGroomComponent;
 
 class UInputMappingContext;
 class UInputAction;
@@ -36,6 +37,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* JumpAction;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
@@ -45,4 +49,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* ViewCamera;
+
+	/*
+	TODO: Add groom component to echo character model when groom component bugs are resolved with UE5
+
+	UPROPERTY(VisibleAnywhere, Category = Hair)
+	UGroomComponent* Hair;
+
+	UPROPERTY(VisibleAnywhere, Category = Hair)
+	UGroomComponent* Eyebrows;*/
 };

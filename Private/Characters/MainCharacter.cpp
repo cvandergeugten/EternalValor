@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+//#include "GroomComponent.h"
 
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
@@ -32,6 +33,13 @@ AMainCharacter::AMainCharacter()
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(CameraBoom);
 
+	/*Hair = CreateDefaultSubobject<UGroomComponent>(TEXT("Hair"));
+	Hair->SetupAttachment(GetMesh());
+	Hair->AttachmentName = FString("head");
+
+	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
+	Eyebrows->SetupAttachment(GetMesh());
+	Eyebrows->AttachmentName = FString("head");*/
 
 }
 
@@ -65,6 +73,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	{
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &AMainCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMainCharacter::Look);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	}
 
 }
