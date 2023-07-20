@@ -7,24 +7,20 @@
 #include "InputActionValue.h"
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h"
+#include "CharacterTypes.h"
 #include "MainCharacter.generated.h"
 
 
 class USpringArmComponent;
 class UCameraComponent;
 class AItem;
+class UAnimMontage;
 //class UGroomComponent;
 
 class UInputMappingContext;
 class UInputAction;
 
-UENUM(BlueprintType)
-enum class ECharacterState : uint8
-{
-	ECS_Unequipped UMETA(DisplayName = "Unequipped"),
-	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "Equipped One-Handed Weapon"),
-	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "Equipped Two-Handed Weapon")
-};
+
 
 UCLASS()
 class ETERNALVALOR_API AMainCharacter : public ACharacter
@@ -55,13 +51,34 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* EKeyAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* AttackAction;
+
+	/*
+	Callbacks for input
+	*/
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void EKeyPressed();
+	void Attack();
+
+	/*
+	Play montage functions
+	*/
+
+	void PlayAttackMontage();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+	bool CanAttack();
 
 private:
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
@@ -71,6 +88,13 @@ private:
 
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
+
+	/*
+	Animation Montages
+	*/
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackMontage;
 
 	/*
 	TODO: Add groom component to echo character model when groom component bugs are resolved with UE5
@@ -83,4 +107,5 @@ private:
 
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 };

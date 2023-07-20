@@ -26,5 +26,6 @@ void UEternalValorAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	{
 		GroundSpeed = UKismetMathLibrary::VSizeXY(MainCharacterMovement->Velocity);
 		IsFalling = MainCharacterMovement->IsFalling();
+		CharacterState = MainCharacter->GetCharacterState();
 	}
 }

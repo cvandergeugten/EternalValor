@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Items/Item.h"
+#include "Characters/CharacterTypes.h"
 #include "Weapon.generated.h"
 
 /**
@@ -17,7 +18,12 @@ class ETERNALVALOR_API AWeapon : public AItem
 public:
 	void Equip(USceneComponent* InParent, FName InSocketName);
 
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+
 protected:
+
+	UPROPERTY(EditAnywhere)
+	ECharacterState CharacterState;
 	
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
