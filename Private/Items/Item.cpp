@@ -61,7 +61,11 @@ void AItem::Tick(float DeltaTime)
 
 	RunningTime += DeltaTime;
 
-	//AddActorWorldRotation(FRotator(0.f, 45.f * DeltaTime, 0.f));
+	if (ItemState == EItemState::EIS_Hovering)
+	{
+		AddActorWorldRotation(FRotator(0.f, 45.f * DeltaTime, 0.f));
+	}
+	
 
 }
 

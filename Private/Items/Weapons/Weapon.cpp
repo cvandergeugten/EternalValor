@@ -12,6 +12,7 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 	FVector OriginalScale = ItemMesh->GetComponentScale();
 
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
+	ItemState = EItemState::EIS_Equipped;
 
 	// Set the scale of the attached mesh to match the original scale
 	ItemMesh->SetWorldScale3D(OriginalScale);
