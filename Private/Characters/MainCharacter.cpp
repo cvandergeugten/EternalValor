@@ -83,7 +83,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMainCharacter::Move(const FInputActionValue& Value)
 {
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState != EActionState::EAS_Unoccupied) return;
 
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -110,8 +110,26 @@ void AMainCharacter::EKeyPressed()
 	if (OverlappingWeapon)
 	{
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
-
 		CharacterState = OverlappingWeapon->GetCharacterState();
+		OverlappingItem = nullptr;
+		EquippedWeapon = OverlappingWeapon;
+		
+	}
+	else 
+	{
+		
+		if (CanDisarm())
+		{
+			ActionState = EActionState::EAS_Equipping;
+			PlayEquipMontage(FName("Unequip"));
+			CharacterState = ECharacterState::ECS_Unequipped;
+		}
+		else if (CanArm())
+		{
+			ActionState = EActionState::EAS_Equipping;
+			PlayEquipMontage(FName("Equip"));
+			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+		}
 	}
 }
 
@@ -130,6 +148,37 @@ bool AMainCharacter::CanAttack()
 	return ActionState == EActionState::EAS_Unoccupied && 
 		CharacterState != ECharacterState::ECS_Unequipped;
 }
+
+void AMainCharacter::Disarm()
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("SpineSocket"));
+	}
+}
+
+void AMainCharacter::Arm()
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
+	}
+}
+
+bool AMainCharacter::CanDisarm()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState != ECharacterState::ECS_Unequipped;
+}
+
+bool AMainCharacter::CanArm()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState == ECharacterState::ECS_Unequipped &&
+		EquippedWeapon;
+}
+
+
 
 void AMainCharacter::PlayAttackMontage()
 {
@@ -155,9 +204,25 @@ void AMainCharacter::PlayAttackMontage()
 	}
 }
 
+void AMainCharacter::PlayEquipMontage(FName SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EquipMontage)
+	{
+		AnimInstance->Montage_Play(EquipMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
+	}
+}
+
 void AMainCharacter::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
 }
+
+void AMainCharacter::EquipEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 
 

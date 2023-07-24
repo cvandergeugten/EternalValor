@@ -18,6 +18,8 @@ class ETERNALVALOR_API AWeapon : public AItem
 public:
 	void Equip(USceneComponent* InParent, FName InSocketName);
 
+	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
+
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
 protected:

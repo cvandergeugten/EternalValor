@@ -15,6 +15,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class AItem;
 class UAnimMontage;
+class AWeapon;
 //class UGroomComponent;
 
 class UInputMappingContext;
@@ -73,6 +74,18 @@ protected:
 	void AttackEnd();
 	bool CanAttack();
 
+	void PlayEquipMontage(FName SectionName);
+
+	UFUNCTION(BLueprintCallable)
+	void EquipEnd();
+	bool CanDisarm();
+	bool CanArm();
+
+	UFUNCTION(BlueprintCallable)
+	void Disarm();
+
+	UFUNCTION(BlueprintCallable)
+	void Arm();
 private:
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
@@ -89,12 +102,18 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	AWeapon* EquippedWeapon;
+
 	/*
 	Animation Montages
 	*/
 
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* EquipMontage;
 
 	/*
 	TODO: Add groom component to echo character model when groom component bugs are resolved with UE5
