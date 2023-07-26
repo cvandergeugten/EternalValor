@@ -7,6 +7,8 @@
 #include "Characters/CharacterTypes.h"
 #include "Weapon.generated.h"
 
+class UBoxComponent;
+
 /**
  * 
  */
@@ -16,6 +18,7 @@ class ETERNALVALOR_API AWeapon : public AItem
 	GENERATED_BODY()
 
 public:
+	AWeapon();
 	void Equip(USceneComponent* InParent, FName InSocketName);
 
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
@@ -23,6 +26,7 @@ public:
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
 protected:
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
 	ECharacterState CharacterState;
@@ -32,4 +36,21 @@ protected:
 	
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex) override;
+
+	UFUNCTION()
+	void OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* WeaponBox;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceStart;
+	
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceEnd;
+
+public:
+	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
 };
