@@ -65,6 +65,10 @@ void AItem::Tick(float DeltaTime)
 	{
 		AddActorWorldRotation(FRotator(0.f, 45.f * DeltaTime, 0.f));
 	}
+	else if (ItemState == EItemState::EIS_Equipped)
+	{
+		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 	
 
 }
