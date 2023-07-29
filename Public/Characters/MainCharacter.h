@@ -78,7 +78,7 @@ protected:
 	void AttackEnd();
 	bool CanAttack();
 
-	void PlayEquipMontage(FName SectionName);
+	void PlayEquipMontage(const FName& SectionName);
 
 	UFUNCTION(BLueprintCallable)
 	void EquipEnd();
